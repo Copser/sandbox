@@ -18,6 +18,11 @@ defmodule SandboxWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    get "/accounts", AccountsController, :index
+    get "/accounts/:id", AccountsController, :show
+    get "/accounts/:id/details", AccountsController, :details
+    get "/accounts/:id/balances", AccountsController, :balances
   end
 
   # Other scopes may use custom stacks.

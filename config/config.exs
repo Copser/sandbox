@@ -41,6 +41,12 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Joken Token config
+config :joken, default_signer: [
+  signer_alg: "HS256",
+  key_octet: "2ua9t873ds1wdf2nhjhdck4bakl3s2kfgir123o8r83bufbfbf1b"
+]
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
