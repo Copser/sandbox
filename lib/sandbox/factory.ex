@@ -10,6 +10,57 @@ defmodule Sandbox.Factory do
 
   @base_url "http://localhost:4000"
 
+  @users [
+    %{
+      account_number: "225948002075",
+      deposit: 100000,
+      id: "2hyfy376s5y973tt42syy",
+      username: "My Checking"
+    },
+    %{
+      account_number: "953702733078",
+      deposit: 100000,
+      id: "h9yhf87ta12j59742y1s9",
+      username: "Jimmy Carter"
+    },
+    %{
+      account_number: "419715297556",
+      deposit: 100000,
+      id: "9s8f94961ty58088f43ta",
+      username: "Ronald Reagan"
+    },
+    %{
+      account_number: "280477291653",
+      deposit: 100000,
+      id: "9y7951a2f14h7y0f47617",
+      username: "George H. W. Bush"
+    },
+    %{
+      account_number: "366968344337",
+      deposit: 100000,
+      id: "f5f3f6y7t8s7a5htj78ty",
+      username: "Bill Clinton"
+    },
+    %{
+      account_number: "953127680237",
+      deposit: 100000,
+      id: "y2y328t1tsy4315aa0y0t",
+      username: "George W. Bush"
+    },
+    %{
+      account_number: "469496713522",
+      deposit: 100000,
+      id: "2y7f1jyhh967839ys87t4",
+      username: "Barack Obama"
+    },
+    %{
+      account_number: "108585185732",
+      deposit: 100000,
+      id: "jhf44y8247syy8jt355f7",
+      username: "Donald Trump"
+    }
+  ]
+
   @account_names [
     "My Checking", "Jimmy Carter", "Ronald Reagan", "George H. W. Bush",
     "Bill Clinton", "George W. Bush", "Barack Obama", "Donald Trump"
@@ -44,13 +95,21 @@ defmodule Sandbox.Factory do
   def merchants, do: @merchants
   def catgories, do: @categories
 
+  def generate_tokens(:user) do
+    for n <- @users do
+      token = Base.encode64("#{n.id}")
+
+      %{id: n.id, username: n.username, token: "test_#{token}"}
+    end
+  end
+
   def create_account(:user) do
-    for n <- @account_names do
+    for n <- @users do
       %{
-        id: Helpers.generate_id,
-        username: n,
-        account_number: Helpers.generate_number(12),
-        deposit: 100000,
+        id: n.id,
+        username: n.username,
+        account_number: n.account_number,
+        deposit: n.deposit,
       }
     end
 

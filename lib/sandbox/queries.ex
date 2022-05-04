@@ -12,6 +12,16 @@ defmodule Sandbox.Queries do
     accounts
   end
 
+  def list_tokens(key) do
+    list = Ets.list(key)
+
+    tokens =
+      list
+      |> Helpers.tuple_to_list()
+
+    tokens
+  end
+
   def get!(key, account_id) do
     account = Ets.get(key, account_id)
 

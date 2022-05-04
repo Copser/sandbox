@@ -12,12 +12,19 @@ defmodule SandboxWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug SandboxWeb.AuthPlug
   end
 
   scope "/", SandboxWeb do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    get "/tokens", TokenController, :index
+  end
+
+  scope "/", SandboxWeb do
+    pipe_through :api
 
     get "/accounts", AccountsController, :index
     get "/accounts/:id", AccountsController, :show
