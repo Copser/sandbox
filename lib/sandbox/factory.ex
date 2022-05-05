@@ -96,7 +96,11 @@ defmodule Sandbox.Factory do
   def catgories, do: @categories
 
   def generate_tokens(:user) do
-    for n <- @users do
+    user =
+      @users
+      |> Enum.take(1)
+
+    for n <- user do
       token = Base.encode64("#{n.id}")
 
       %{id: n.id, username: n.username, token: "test_#{token}"}
