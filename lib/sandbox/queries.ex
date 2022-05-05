@@ -2,24 +2,14 @@ defmodule Sandbox.Queries do
   alias Sandbox.Ets
   alias Sandbox.Helpers
 
-  def list_accounts(key) do
+  def list!(key) do
     list = Ets.list(key)
 
-    accounts =
+    list =
       list
       |> Helpers.tuple_to_list()
 
-    accounts
-  end
-
-  def list_tokens(key) do
-    list = Ets.list(key)
-
-    tokens =
-      list
-      |> Helpers.tuple_to_list()
-
-    tokens
+    list
   end
 
   def get!(key, account_id) do

@@ -2,7 +2,7 @@ defmodule SandboxWeb.AccountsController do
   use SandboxWeb, :controller
 
   def index(conn, _params) do
-    accounts = Sandbox.Queries.list_accounts(:accounts)
+    accounts = Sandbox.Queries.list!(:accounts)
 
     render(conn, "index.json", accounts: accounts)
   end
