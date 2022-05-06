@@ -13,9 +13,10 @@ defmodule Sandbox.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Sandbox.PubSub},
       # Start the Endpoint (http/https)
-      SandboxWeb.Endpoint
+      SandboxWeb.Endpoint,
       # Start a worker by calling: Sandbox.Worker.start_link(arg)
       # {Sandbox.Worker, arg}
+      Sandbox.Populate,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

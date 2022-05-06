@@ -199,7 +199,6 @@ defmodule Sandbox.Factory do
         user
         |> Enum.map(fn t -> %{
           account_id: "acc_#{t.id}",
-          amount: Helpers.generate_number(3),
           date: i,
           description: "",
           details: Enum.random(__MODULE__.build_merchant(:merchant)),
@@ -212,21 +211,24 @@ defmodule Sandbox.Factory do
           type: "card_payment"
         } end)
 
-      transaction
-      |> Enum.map(fn t ->
-        %{
-          account_id: t.account_id,
-          amount: t.amount,
-          date: i,
-          description: __MODULE__.get_merchant_name(t.details),
-          details: t.details,
-          id: t.id,
-          links: t.links,
-          running_balance: __MODULE__.subtract_ammount(t.amount, t.running_balance),
-          status: __MODULE__.check_status?(t.details),
-          type: t.type,
-        }
+      Enum.map(0..5, fn _ ->
+        transaction
+        |> Enum.map(fn t ->
+          %{
+            account_id: t.account_id,
+            amount: Helpers.generate_number(3) |> String.to_integer,
+            date: i,
+            description: __MODULE__.get_merchant_name(t.details),
+            details: t.details,
+            id: t.id,
+            links: t.links,
+            running_balance: t.running_balance,
+            status: __MODULE__.check_status?(t.details),
+            type: t.type,
+          }
+        end)
       end)
+      |> List.flatten()
     end
   end
 

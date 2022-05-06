@@ -1,8 +1,19 @@
 defmodule Sandbox.Populate do
+  use GenServer
   require Logger
   alias Sandbox.Ets
   alias Sandbox.Helpers
   alias Sandbox.Factory
+
+  def start_link(_args) do
+    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+  end
+
+  def init(nil) do
+    __MODULE__.populate_sanbox!()
+
+    {:ok, nil}
+  end
 
   def populate_sanbox! do
     users = Factory.create_account(:user)
