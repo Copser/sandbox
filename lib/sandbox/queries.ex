@@ -22,4 +22,15 @@ defmodule Sandbox.Queries do
 
     account
   end
+
+  def lookup!(key, account_id, transaction_id) do
+    account = Ets.select(key, account_id, transaction_id)
+
+    account =
+      account
+      |> Helpers.tuple_to_list()
+      |> List.first()
+
+    account
+  end
 end

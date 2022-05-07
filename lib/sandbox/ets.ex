@@ -20,4 +20,8 @@ defmodule Sandbox.Ets do
   def list(table_name) when is_atom(table_name) do
     :ets.tab2list(table_name)
   end
+
+  def select(table_name, id, tnx_id) do
+    :ets.select(table_name, [{{:"$1", :_}, [{:or, {:==, :"$1", id}, {:==, :"$1", tnx_id}}], [:"$_"]}])
+  end
 end

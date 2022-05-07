@@ -38,6 +38,13 @@ defmodule Sandbox.Helpers do
       end)
   end
 
+  def transaction_tuple(list, keys \\ []) do
+    list
+    |> Enum.map(fn t ->
+        {t.id, t.account_id, t |> Map.take(keys)}
+      end)
+  end
+
   def tuple_to_list(list \\ []) do
     list
     |> Enum.map(fn {k, v} ->

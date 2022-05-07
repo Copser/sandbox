@@ -24,4 +24,10 @@ defmodule SandboxWeb.AccountsController do
 
     render(conn, "balances.json", account: account)
   end
+
+  def transactions(conn, %{"id" => id, "transaction_id" => transaction_id}) do
+    account = Sandbox.Queries.lookup!(:transactions, id, transaction_id)
+
+    render(conn, "transactions.json", account: account)
+  end
 end

@@ -202,7 +202,6 @@ defmodule Sandbox.Factory do
           date: i,
           description: "",
           details: Enum.random(__MODULE__.build_merchant(:merchant)),
-          id: "txn_#{t.id}",
           links: %{
             account: "#{@base_url}/accounts/acc_#{t.id}",
             self: "#{@base_url}/accounts/acc_#{t.id}/balances/transactions/txn_#{t.id}",
@@ -220,7 +219,7 @@ defmodule Sandbox.Factory do
             date: i,
             description: __MODULE__.get_merchant_name(t.details),
             details: t.details,
-            id: t.id,
+            id: "txn_#{Helpers.generate_id}",
             links: t.links,
             running_balance: t.running_balance,
             status: __MODULE__.check_status?(t.details),
@@ -230,6 +229,7 @@ defmodule Sandbox.Factory do
       end)
       |> List.flatten()
     end
+    |> List.flatten()
   end
 
   def build_merchant(:merchant) do

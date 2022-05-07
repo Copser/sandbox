@@ -21,6 +21,7 @@ defmodule Sandbox.Populate do
     banks = Factory.create_bank_account(:account, users)
     details = Factory.create_details(:account, users)
     balances = Factory.create_balances(:account, users)
+    transactions = Factory.create_transactions(:account, users)
 
     users = Helpers.list_to_tuple(users, [
       :username,
@@ -58,16 +59,30 @@ defmodule Sandbox.Populate do
       :links,
     ])
 
+    transactions = Helpers.list_to_tuple(transactions, [
+      :account_id,
+      :amount,
+      :date,
+      :descriptions,
+      :details,
+      :links,
+      :running_balance,
+      :status,
+      :type,
+    ])
+
     auth_tokens = Ets.create_or_update_ets_table(:tokens, tokens)
     sandbox_users = Ets.create_or_update_ets_table(:users, users)
     bank_account = Ets.create_or_update_ets_table(:accounts, banks)
     account_details = Ets.create_or_update_ets_table(:details, details)
     account_balances = Ets.create_or_update_ets_table(:balances, balances)
+    account_transactions = Ets.create_or_update_ets_table(:transactions, transactions)
 
     Logger.info("Sandbox Users created, #{sandbox_users}")
     Logger.info("Tokens Generated #{auth_tokens}")
     Logger.info("Bank Account Table created, #{bank_account}")
     Logger.info("Account Details Table created #{account_details}")
     Logger.info("Account Balances Table #{account_balances}")
+    Logger.info("Account Transactions Table created #{account_transactions}")
   end
 end
