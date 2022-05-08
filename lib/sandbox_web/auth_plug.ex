@@ -1,5 +1,6 @@
 defmodule SandboxWeb.AuthPlug do
   @behaviour Plug
+  import Plug.Conn
 
   alias Sandbox.Ets
 
@@ -48,5 +49,6 @@ defmodule SandboxWeb.AuthPlug do
     conn
     |> Plug.Conn.put_resp_content_type("application/json")
     |> Plug.Conn.send_resp(401, ~s[{"message": "Unauthorized"}])
+    |> halt()
   end
 end

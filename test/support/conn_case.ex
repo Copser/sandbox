@@ -28,6 +28,15 @@ defmodule SandboxWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint SandboxWeb.Endpoint
+
+      def auth_header(conn, user_id) do
+        token = Base.encode64(user_id)
+        header = "Basic " <> "test_#{token}"
+
+        conn
+        |> put_req_header("authorization", header)
+        |> put_req_header("content-type", "application/json")
+      end
     end
   end
 

@@ -1,8 +1,6 @@
 defmodule Sandbox.Helpers do
   alias Timex
 
-  @interval 90
-
   def generate_id do
     for _ <- 1..21, into: "", do: <<Enum.random('0123456789AYJSHFYT')>> |> String.downcase()
   end

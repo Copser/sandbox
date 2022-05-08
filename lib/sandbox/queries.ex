@@ -20,7 +20,11 @@ defmodule Sandbox.Queries do
       |> Helpers.tuple_to_list()
       |> List.first()
 
-    account
+    if is_nil(account) == false do
+      {:ok, account}
+    else
+      {:error, "Resource not found for #{account_id}"}
+    end
   end
 
   def lookup!(key, account_id, transaction_id) do

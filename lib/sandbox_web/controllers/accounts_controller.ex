@@ -8,20 +8,35 @@ defmodule SandboxWeb.AccountsController do
   end
 
   def show(conn, %{"id" => id}) do
-    account = Sandbox.Queries.get!(:accounts, id)
-
-    render(conn, "show.json", account: account)
+    case Sandbox.Queries.get!(:accounts, id) do
+      {:ok, account} ->
+        render(conn, "show.json", account: account)
+      {:error, message} ->
+        conn
+        |> put_status(401)
+        |> json(%{errors: %{detail: message}})
+    end
   end
 
   def details(conn, %{"id" => id}) do
-    account = Sandbox.Queries.get!(:details, id)
-
-    render(conn, "details.json", account: account)
+    case Sandbox.Queries.get!(:details, id) do
+      {:ok, account} ->
+        render(conn, "details.json", account: account)
+      {:error, message} ->
+        conn
+        |> put_status(401)
+        |> json(%{errors: %{detail: message}})
+    end
   end
 
   def balances(conn, %{"id" => id}) do
-    account = Sandbox.Queries.get!(:balances, id)
-
-    render(conn, "balances.json", account: account)
+    case Sandbox.Queries.get!(:balances, id) do
+      {:ok, account} ->
+        render(conn, "balances.json", account: account)
+      {:error, message} ->
+        conn
+        |> put_status(401)
+        |> json(%{errors: %{detail: message}})
+    end
   end
 end
