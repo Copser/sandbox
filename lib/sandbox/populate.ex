@@ -63,7 +63,7 @@ defmodule Sandbox.Populate do
       :account_id,
       :amount,
       :date,
-      :descriptions,
+      :description,
       :details,
       :links,
       :running_balance,

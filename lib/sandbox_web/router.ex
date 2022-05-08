@@ -30,7 +30,9 @@ defmodule SandboxWeb.Router do
     get "/accounts/:id", AccountsController, :show
     get "/accounts/:id/details", AccountsController, :details
     get "/accounts/:id/balances", AccountsController, :balances
-    get "/accounts/:id/transactions/:transaction_id", AccountsController, :transactions
+
+    get "/accounts/:id/transactions", TransactionsController, :list_transactions
+    get "/accounts/:id/transactions/:transaction_id", TransactionsController, :transactions
   end
 
   # Other scopes may use custom stacks.

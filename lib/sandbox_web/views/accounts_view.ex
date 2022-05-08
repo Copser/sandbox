@@ -17,10 +17,6 @@ defmodule SandboxWeb.AccountsView do
     %{data: render_one(account, __MODULE__, "balances.json")}
   end
 
-  def render("transaction.json", %{account: account}) do
-    %{data: render_one(account, __MODULE__, "transaction.json")}
-  end
-
   def render("accounts.json", %{accounts: accounts}) do
     %{
       currency: accounts.currency,
@@ -50,21 +46,6 @@ defmodule SandboxWeb.AccountsView do
       available: account.available,
       ledger: account.ledger,
       links: account.links,
-    }
-  end
-
-  def render("transaction.json", %{account: account}) do
-    %{
-      account_id: account.account_id,
-      amount: account.amount,
-      date: account.date,
-      description: account.description,
-      details: account.details,
-      id: account.id,
-      links: account.links,
-      running_balance: account.running_balance,
-      status: account.status,
-      type: account.type,
     }
   end
 end

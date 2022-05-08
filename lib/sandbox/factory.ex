@@ -202,10 +202,6 @@ defmodule Sandbox.Factory do
           date: i,
           description: "",
           details: Enum.random(__MODULE__.build_merchant(:merchant)),
-          links: %{
-            account: "#{@base_url}/accounts/acc_#{t.id}",
-            self: "#{@base_url}/accounts/acc_#{t.id}/balances/transactions/txn_#{t.id}",
-          },
           running_balance: t.deposit,
           type: "card_payment"
         } end)
@@ -218,9 +214,12 @@ defmodule Sandbox.Factory do
             amount: Helpers.generate_number(3) |> String.to_integer,
             date: i,
             description: __MODULE__.get_merchant_name(t.details),
-            details: t.details,
-            id: "txn_#{Helpers.generate_id}",
-            links: t.links,
+            details: t.details |> Map.get(:details),
+            id: __MODULE__.generate_transaction_id() |> Map.get(:id),
+            links: %{
+              account: "#{@base_url}/accounts/#{t.account_id}",
+              self: "#{@base_url}/accounts/#{t.account_id}/transactions/#{__MODULE__.generate_transaction_id() |> Map.get(:id)}",
+            },
             running_balance: t.running_balance,
             status: __MODULE__.check_status?(t.details),
             type: t.type,
@@ -245,6 +244,12 @@ defmodule Sandbox.Factory do
         },
       }
     end
+  end
+
+  def generate_transaction_id do
+    id = Helpers.generate_id
+
+    %{id: "txn_#{id}"}
   end
 
   def get_merchant_name(merchant) do

@@ -24,4 +24,11 @@ defmodule Sandbox.Ets do
   def select(table_name, id, tnx_id) do
     :ets.select(table_name, [{{:"$1", :_}, [{:or, {:==, :"$1", id}, {:==, :"$1", tnx_id}}], [:"$_"]}])
   end
+
+  def map_select(table_name, id) do
+    # fun = :ets.fun2ms(fn {_, map} when map.account_id == id -> map end) ## bad arg??
+
+    :ets.select(table_name, [{{:_, :"$1"}, [{:==, {:map_get, :account_id, :"$1"}, id}], [:"$_"]}])
+    # :ets.select(table_name, fun)
+  end
 end

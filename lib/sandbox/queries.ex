@@ -33,4 +33,11 @@ defmodule Sandbox.Queries do
 
     account
   end
+
+  def list_transactions(key, account_id) do
+    transactions = Ets.map_select(key, account_id)
+
+    transactions
+    |> Helpers.tuple_to_list()
+  end
 end
