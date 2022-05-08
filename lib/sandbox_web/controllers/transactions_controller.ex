@@ -2,14 +2,24 @@ defmodule SandboxWeb.TransactionsController do
   use SandboxWeb, :controller
 
   def list_transactions(conn, %{"id" => id}) do
-    transactions = Sandbox.Queries.list_transactions(:transactions, id)
-
-    render(conn, "index.json", transactions: transactions)
+    case Sandbox.Queries.list_transactions(:transactions, id) do
+      {:ok, transactions} ->
+        render(conn, "index.json", transactions: transactions)
+      {:error, message} ->
+        conn
+        |> put_status(401)
+        |> json(%{errors: %{detail: message}})
+    end
   end
 
   def transactions(conn, %{"id" => id, "transaction_id" => transaction_id}) do
-    account = Sandbox.Queries.lookup!(:transactions, id, transaction_id)
-
-    render(conn, "show.json", account: account)
+    case Sandbox.Queries.lookup!(:transactions, id, transaction_id) do
+      {:ok, account} ->
+        render(conn, "show.json", account: account)
+      {:error, message} ->
+        conn
+        |> put_status(401)
+        |> json(%{errors: %{detail: message}})
+    end
   end
 end

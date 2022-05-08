@@ -30,18 +30,24 @@ defmodule Sandbox.Queries do
   def lookup!(key, account_id, transaction_id) do
     account = Ets.select(key, account_id, transaction_id)
 
-    account =
-      account
-      |> Helpers.tuple_to_list()
-      |> List.first()
-
-    account
+    if is_nil(account) == false do
+      {:ok, account}
+    else
+      {:error, "Resource not found for #{account_id}"}
+    end
   end
 
   def list_transactions(key, account_id) do
     transactions = Ets.map_select(key, account_id)
 
-    transactions
-    |> Helpers.tuple_to_list()
+    if Enum.count(transactions) == 0 do
+      {:error, "Resource not found for #{account_id}"}
+    else
+      transactions =
+        transactions
+        |> Helpers.tuple_to_list()
+
+      {:ok, transactions}
+    end
   end
 end
