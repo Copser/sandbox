@@ -1,4 +1,7 @@
 defmodule SandboxWeb.AuthPlug do
+  @moduledoc """
+  AuthPlug module that holds Basic Authentication verification logic.
+  """
   @behaviour Plug
   import Plug.Conn
 

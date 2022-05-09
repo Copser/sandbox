@@ -1,8 +1,10 @@
 defmodule Sandbox.Factory do
+  @moduledoc """
+  Factory module provides, generic functions to populate ETS tables.
+  """
   require Logger
   use Timex
   alias Sandbox.Helpers
-  alias Sandbox.Accounts.User
   alias Sandbox.Accounts.BankAccounts
   alias Sandbox.Accounts.Details
   alias Sandbox.Accounts.Balances
@@ -92,6 +94,9 @@ defmodule Sandbox.Factory do
     "Neiman Marcus", "Jack In The Box", "Sonic", "Shell",
   ]
 
+  @doc """
+  Generate and populates :tokens ets schema.
+  """
   def generate_tokens(:user) do
     user =
       @users
@@ -104,6 +109,9 @@ defmodule Sandbox.Factory do
     end
   end
 
+  @doc """
+  Generete users that will be used for :details, :balance, and :transaction ETS table schemas.
+  """
   def create_account(:user) do
     for n <- @users do
       %{
@@ -113,15 +121,11 @@ defmodule Sandbox.Factory do
         deposit: n.deposit,
       }
     end
-
-    # users
-    # |> Enum.map(
-    #   fn %{id: id, username: username, account_number: account_number, deposit: deposit}
-    #   ->
-    #     {id, %{username: username, account_number: account_number, deposit: deposit}}
-    #   end)
   end
 
+  @doc """
+  Generate and populates :accounts ets schema
+  """
   def create_bank_account(:account, user) do
     user
     |> Enum.map(fn t ->
@@ -144,6 +148,9 @@ defmodule Sandbox.Factory do
     end)
   end
 
+  @doc """
+  Generates and populates :details ets schema
+  """
   def create_details(:account, user) do
     user
     |> Enum.map(fn t ->
@@ -162,6 +169,9 @@ defmodule Sandbox.Factory do
     end)
   end
 
+  @doc """
+  Generates and populates :balances ets schema
+  """
   def create_balances(:account, user) do
     user
     |> Enum.map(fn t ->
@@ -178,16 +188,10 @@ defmodule Sandbox.Factory do
     end)
   end
 
-  def create_institution(:account) do
-    for t <- @institutions do
-      %{
-        id: Helpers.snake_case(t),
-        name: t
-      }
-    end
-  end
 
-  # TODO: https://stackoverflow.com/questions/43831451/how-to-count-cumulative-sum-for-a-list-in-elixir
+  @doc """
+  Generated transaction data for :transactions resource. Data is generated for 90 days time period.
+  """
   def create_transactions(:account, user) do
     interval = Helpers.generate_time_interval()
 
@@ -228,6 +232,45 @@ defmodule Sandbox.Factory do
     |> List.flatten()
   end
 
+  @doc """
+  Create insitution data for :account resource.
+
+  * `id` - snake case of accounts name
+
+  ## Example:
+      iex()> Factory.create_institution(:account)
+      [%{id: "chase", name: "Chase"},
+      %{id: "bank_of_america", name: "Bank of America"},
+      %{id: "wells_fargo", name: "Wells Fargo"},
+      %{id: "citibank", name: "Citibank"},
+      %{id: "capital_one", name: "Capital One"}]
+  """
+  def create_institution(:account) do
+    for t <- @institutions do
+      %{
+        id: Helpers.snake_case(t),
+        name: t
+      }
+    end
+  end
+
+  @doc """
+    Build merchant data for :transaction schema
+
+    ## Example:
+      iex()> Factory.build_merchant(:merchant)
+
+      [ ....,
+        %{
+          details: %{
+            category: "service",
+            counterparty: %{name: "BED, BATH & BEYOND", type: "organization"},
+            processing_status: "complete"
+          }
+        },
+        ....,
+      ]
+  """
   def build_merchant(:merchant) do
     for m <- @merchants do
       %{
@@ -243,12 +286,26 @@ defmodule Sandbox.Factory do
     end
   end
 
+  @doc """
+  Generate transaction id for :transactions ets schema
+
+  ## Example
+
+    iex(20)> Factory.generate_transaction_id
+    %{id: "txn_8hj0ss6yy2s83859a7h23"}
+  """
   def generate_transaction_id do
     id = Helpers.generate_id
 
     %{id: "txn_#{id}"}
   end
 
+  @doc """
+  Extract merchange name and uppercase it.
+
+  This function is used so mechantes names are consitent inside `:transactions` schema.
+  This is used for `:transactions` `description` param.
+  """
   def get_merchant_name(merchant) do
     %{details: %{counterparty: %{name: name}}} = merchant
     name = name |> String.downcase()
@@ -266,6 +323,9 @@ defmodule Sandbox.Factory do
     subtract
   end
 
+  @doc """
+  Check `merchants` - `processing_status`, and assign proper payment status to transaction
+  """
   def check_status?(details) do
     %{details: %{processing_status: processing_status}} = details
 
@@ -277,7 +337,7 @@ defmodule Sandbox.Factory do
     end
   end
 
+  # Helper functions
   def merchants, do: @merchants
   def catgories, do: @categories
-  def users, do: @users
 end

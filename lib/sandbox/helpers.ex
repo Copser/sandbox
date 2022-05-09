@@ -1,4 +1,7 @@
 defmodule Sandbox.Helpers do
+  @moduledoc """
+  Helpers module holds functions that are used to tranverse data.
+  """
   alias Timex
 
   def generate_id do
@@ -21,6 +24,9 @@ defmodule Sandbox.Helpers do
     |> String.downcase
   end
 
+  @doc """
+  Generated date interval for Account Transactions
+  """
   def generate_time_interval do
     Date.range(Date.utc_today, Date.add(Date.utc_today, -90))
     |> Enum.to_list
@@ -36,6 +42,9 @@ defmodule Sandbox.Helpers do
       end)
   end
 
+  @doc """
+  Traverse ETS tuple data to Elixir map
+  """
   def tuple_to_list(list \\ []) do
     list
     |> Enum.map(fn {k, v} ->

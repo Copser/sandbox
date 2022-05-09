@@ -1,4 +1,7 @@
 defmodule Sandbox.Populate do
+  @moduledoc """
+  Populate module is responsible for generating and populating data into Sandbox ETS.
+  """
   use GenServer
   require Logger
   alias Sandbox.Ets
