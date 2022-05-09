@@ -38,16 +38,24 @@ defmodule Sandbox.Queries do
   end
 
   def list_transactions(key, account_id) do
-    transactions = Ets.map_select(key, account_id)
+    Ets.map_select(key, account_id)
+    |> Helpers.tuple_to_list()
+    |> Enum.sort_by(&(&1.date), {:desc, Date})
+  end
 
-    if Enum.count(transactions) == 0 do
-      {:error, "Resource not found for #{account_id}"}
-    else
-      transactions =
-        transactions
-        |> Helpers.tuple_to_list()
+  def filter_transactions(key, account_id, from_id \\ "", count \\ 0) do
+    transactions =
+      Ets.map_select(key, account_id)
+      |> Helpers.tuple_to_list()
+      |> Enum.sort_by(&(&1.date), {:desc, Date})
 
-      {:ok, transactions}
-    end
+    transactions
+    |> Enum.map(fn t ->
+      if t.id == from_id do
+        transactions |> Enum.take(count)
+      end
+    end)
+    |> Enum.reject(fn x -> x == nil end)
+    |> List.flatten()
   end
 end

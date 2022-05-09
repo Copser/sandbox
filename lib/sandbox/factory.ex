@@ -92,9 +92,6 @@ defmodule Sandbox.Factory do
     "Neiman Marcus", "Jack In The Box", "Sonic", "Shell",
   ]
 
-  def merchants, do: @merchants
-  def catgories, do: @categories
-
   def generate_tokens(:user) do
     user =
       @users
@@ -202,7 +199,7 @@ defmodule Sandbox.Factory do
           date: i,
           description: "",
           details: Enum.random(__MODULE__.build_merchant(:merchant)),
-          running_balance: t.deposit,
+          running_balance: 0,
           type: "card_payment"
         } end)
 
@@ -279,4 +276,8 @@ defmodule Sandbox.Factory do
         "posted"
     end
   end
+
+  def merchants, do: @merchants
+  def catgories, do: @categories
+  def users, do: @users
 end
